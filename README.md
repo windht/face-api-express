@@ -8,8 +8,15 @@ The official face-api.js examples is written in ts and requires some extra effor
 
 ## To run
 
+First install dependencies
 ```
 yarn
+```
+
+Secondly drag the `weight` folder from face-api.js and named to `models` to root folder.
+
+Thirdly start the service
+```
 yarn start
 ```
 
