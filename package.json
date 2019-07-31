@@ -1,0 +1,19 @@
+{
+  "name": "face-api-tht",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@tensorflow/tfjs-node": "^1.2.5",
+    "canvas": "^2.5.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "face-api.js": "^0.20.1",
+    "fs-extra": "^8.1.0"
+  }
+}
