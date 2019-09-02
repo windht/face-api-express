@@ -39,4 +39,18 @@ By default the server runs at port `9000` and exposes `/detect` for receiving a 
 }
 ```
 
+We also have `/detect-matches` for detecting matching faces, it accepts following request 
+
+```
+{
+    "image":"/9j/4AAQSkZJRgABA....the" // The source image
+    "faces": [
+        {
+            "name":"Tony",
+            "image":"/9j/4AAQSkZJRgABA....the" // The face image
+        }
+    ]
+}
+```
+
 It is easy to play with `req.body.image` if you want to handle your own logic. Just call `util.detect` and pass in the buffer of the image.

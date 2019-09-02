@@ -20,6 +20,23 @@ app.post("/detect", async(req, res)=> {
     }
 });
 
+app.post("/detect-matches", async(req, res)=> {
+    try {
+        const {detections,detectedImage} = await util.detectMatches({
+            _image:req.body.image.contains("http://") || req.body.image.contains("https://") ? req.body.image : Buffer.from(req.body.image,'base64'),
+            _faces:req.body.faces.map(face=>({
+                name:face.name,
+                image:face.image.contains("http://") || face.image.contains("https://") ? face.image : Buffer.from(face.image,'base64')
+            })),
+            draw: req.body.draw
+        });
+        res.send({detections,detectedImage});
+    } catch(err) {
+        console.log(err);
+        res.status(400).send(err);
+    }
+});
+
 server.listen(port, function() {
     console.log("Server started on port:" + port);
 });
