@@ -15,12 +15,19 @@ module.exports = {
     await faceapi.nets.faceLandmark68Net.loadFromDisk("./models");
     await faceapi.nets.faceRecognitionNet.loadFromDisk("./models");
   },
-  detect: async _image => {
+  detect: async (_image, detail) => {
     const image = await canvas.loadImage(_image);
-    const detections = await faceapi.detectAllFaces(
-      image,
-      faceDetectionOptions
-    );
+    let detections;
+
+    if (detail) {
+      detections = await faceapi
+        .detectAllFaces(image, faceDetectionOptions)
+        .withFaceLandmarks()
+        .withFaceDescriptors();
+    } else {
+      detections = await faceapi.detectAllFaces(image, faceDetectionOptions);
+    }
+
     return detections;
   },
   detectMatches: async ({ _image, _faces, draw }) => {
@@ -69,9 +76,11 @@ module.exports = {
   },
   detectMatchesWithDescriptors: async ({ _image, _faces, draw }) => {
     const image = await canvas.loadImage(_image);
-    const labeledDescriptors = _faces.map(
-      face => new faceapi.LabeledFaceDescriptors(face.name, face.descriptors)
-    );
+    const labeledDescriptors = _faces.map(face => {
+      return new faceapi.LabeledFaceDescriptors(face.name, [
+        new Float32Array(face.descriptor)
+      ]);
+    });
     const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors);
     const results = await faceapi
       .detectAllFaces(image)

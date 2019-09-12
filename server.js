@@ -13,7 +13,13 @@ app.use(bodyParser.json({ limit: "50mb" }));
 
 app.post("/detect", async (req, res) => {
   try {
-    const detections = await util.detect(Buffer.from(req.body.image, "base64"));
+    const detections = await util.detect(
+      Buffer.from(
+        req.body.image.replace(/^data:image\/jpeg;base64,/, ""),
+        "base64"
+      ),
+      req.body.detail
+    );
     res.send(detections);
   } catch (err) {
     console.log(err);
@@ -24,8 +30,12 @@ app.post("/detect", async (req, res) => {
 app.post("/detect-matches-descriptor", async (req, res) => {
   try {
     const detections = await util.detectMatchesWithDescriptors({
-      _image: Buffer.from(req.body.image, "base64"),
-      _faces: req.body.faces
+      _image: Buffer.from(
+        req.body.image.replace(/^data:image\/jpeg;base64,/, ""),
+        "base64"
+      ),
+      _faces: req.body.faces,
+      draw: req.body.draw
     });
     res.send(detections);
   } catch (err) {
